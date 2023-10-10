@@ -16,13 +16,14 @@ source:
 
 build:
   number: {{ build }}
-  script: pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
+  script: {{PYTHON}} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
 
 requirements:
   host:
     - python
     - setuptools
-
+    - pip
+    - wheel
   run:
     - python
     - six >=1.4.0
@@ -30,14 +31,19 @@ requirements:
 test:
   imports:
     - memcache
+  requires:
+    - pip
+  commands:
+    - pip check
 
 about:
-  home: http://www.tummy.com/Community/software/python-memcached/
+  home: https://github.com/linsomniac/python-memcached
   license_file: {{ RECIPE_DIR }}/PSF.LICENSE
-  license: PSF 2.0
+  license: PSF-2.0
   license_family: PSF
   summary: Pure python memcached client
   dev_url: https://github.com/linsomniac/python-memcached
+  doc_url: https://github.com/linsomniac/python-memcached
 
 extra:
   recipe-maintainers:
