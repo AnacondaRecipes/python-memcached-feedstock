@@ -24,7 +24,7 @@ requirements:
 
 test:
   source_files:
-    - tests/test_setmulti.py
+    - tests
   imports:
     - memcache
   commands:
