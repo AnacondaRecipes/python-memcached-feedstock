@@ -1,47 +1,49 @@
 {% set name = "python-memcached" %}
-{% set version = "1.59" %}
-{% set bundle = "tar.gz" %}
-{% set hash_type = "sha256" %}
-{% set hash_val = "a2e28637be13ee0bf1a8b6843e7490f9456fd3f2a4cb60471733c7b5d5557e4f" %}
-{% set build = 1 %}
+{% set version = "1.62" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  fn: {{ name }}-{{ version }}.{{ bundle }}
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.{{ bundle }}
-  {{ hash_type }}: {{ hash_val }}
+  url: https://github.com/linsomniac/{{ name }}/archive/refs/tags/{{ version }}.tar.gz
+  sha256: 2877f0885ade0c4c6871c863914838d23c955621f1a9f56a9b941dd1facb250a
 
 build:
-  number: {{ build }}
-  script: {{PYTHON}} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
+  number: 0
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   host:
-    - python
-    - setuptools
     - pip
+    - python
     - wheel
+    - setuptools
   run:
     - python
-    - six >=1.4.0
 
 test:
+  source_files:
+    - tests
   imports:
     - memcache
-  requires:
-    - pip
   commands:
     - pip check
+    - pytest -v tests/test_setmulti.py
+  requires:
+    - pip
+    - pytest
 
 about:
   home: https://github.com/linsomniac/python-memcached
-  license_file: {{ RECIPE_DIR }}/PSF.LICENSE
+  license_file: PSF.LICENSE
   license: PSF-2.0
   license_family: PSF
   summary: Pure python memcached client
+  description: |
+    This software is a 100% Python interface to the memcached memory cache daemon.
+    It is the client side software which allows storing values in one or more, possibly
+    remote, memcached servers. Search google for memcached for more information.
   dev_url: https://github.com/linsomniac/python-memcached
   doc_url: https://github.com/linsomniac/python-memcached
 
